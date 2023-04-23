@@ -251,6 +251,12 @@ def ml():
         print("\n\n\n")
 
 
+        dis = mostcmnword
+        med = ad[mostcmnword]
+        cursor.execute("insert into diagnosis(p_id,disease_diagnosed,meds_prescribed) values(%s,%s,%s)",(usern,dis,med))
+        con.commit()
+
+
 def old_user():
     global usern
     usern = input('Enter patient ID: ')
@@ -270,10 +276,38 @@ def old_user():
                     print("\n")
                     cursor.execute('select * from patients where p_id = (%s)',(usern,))
                     result = cursor.fetchall()
+                    cu = 0
+                    su = 0
                     print("--------------------")
                     for i in result:
                         for j in i:
-                            print(j)
+                            print(j," ", end = "")
+                            cu +=1
+                            if cu <5:
+                                continue
+                            else:
+                                print("\n")
+                                cu = 0
+                                continue
+                    
+                    print("--------------------")
+
+                    print("\n\n")
+                    print("--------------------")
+                    print("Previously diagnosed diseases: ")
+                    cursor.execute("select * from diagnosis where p_id = (%s)",(usern,))
+                    resu = cursor.fetchall()
+                    for i in resu:
+                        for j in i:
+                            print(j," ", end = "")
+                            su +=1
+                            if su <4:
+                                continue
+                            else:
+                                print("\n")
+                                su = 0
+                                continue
+                    print("\n")
                     print("--------------------")
 
                     asku = input("would you like to continue using the program(Y/N): ")
